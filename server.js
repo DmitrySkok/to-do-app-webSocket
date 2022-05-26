@@ -4,7 +4,7 @@ const socket = require('socket.io');
 const cors = require('cors');
 
 const db = require('./db.js');
-const tasks = db.tasks;
+let tasks = db.tasks;
 
 const app = express();
 
@@ -30,12 +30,11 @@ io.on('connection', (socket) => {
 
   socket.on('addTask', (task) => {
     tasks.push(task);
-    // console.log(tasks);
     socket.broadcast.emit('addTask', task);
   });
 
   socket.on('removeTask', (id) => { //?
-    tasks.filter(task => task.id !== id);
+    tasks = tasks.filter(task => task.id !== id);
     socket.broadcast.emit('removeTask', id);
   });
 
